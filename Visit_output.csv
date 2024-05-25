@@ -1,0 +1,4 @@
+id,patient_id,doctor_id,date,purpose,notes
+1,1,1,2022-04-10,Routine check-up,All good
+2,2,2,2022-05-15,Post-surgery follow-up,Recovery is going well
+3,3,3,2022-06-20,Consultation,Discussed migraine management

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop id="bg-video">
+            <source src="White Waves - Background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="logo.webp" alt="Doc AI Logo">
+                <span>Doc AI</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="main.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                </ul>
+            </nav>
+            <div class="auth-links">
+                <a href="html.html">Sign in</a>
+                <a href="register.html" class="register">Register</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="left-section">
+                <h1 class="gradient-text">Log In to have the best assistant that you can have</h1>
+                <p class="gradient-text">If you don't have an account you can <a href="register.html" class="gradient-link">Register here!</a></p>
+            </div>
+            <div class="right-section">
+                <form class="login-form">
+                    <h2>Welcome User</h2>
+                    <div class="form-group">
+                        <label for="email">Enter Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="login-button">Log In</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

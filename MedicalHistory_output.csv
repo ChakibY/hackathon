@@ -1,0 +1,4 @@
+id,patient_id,doctor_id,date,diagnosis,treatment
+1,1,1,2022-01-15,Flu,Rest and hydration
+2,2,2,2022-02-20,Appendicitis,Appendectomy
+3,3,3,2022-03-25,Migraine,Pain management

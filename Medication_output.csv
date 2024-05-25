@@ -1,0 +1,4 @@
+id,patient_id,name,dosage,frequency
+1,1,Ibuprofen,200mg,Twice a day
+2,2,Amoxicillin,500mg,Three times a day
+3,3,Aspirin,100mg,Once a day

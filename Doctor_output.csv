@@ -1,0 +1,4 @@
+id,first_name,last_name,specialty,contact_info
+1,Gregory,House,Diagnostics,house@example.com
+2,Meredith,Grey,General Surgery,grey@example.com
+3,John,Watson,Family Medicine,watson@example.com

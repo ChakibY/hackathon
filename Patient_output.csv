@@ -1,0 +1,4 @@
+id,first_name,last_name,gender,contact_info
+1,John,Doe,Male,john@example.com
+2,Alice,Smith,Female,alice@example.com
+3,Bob,Johnson,Male,bob@example.com

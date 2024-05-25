@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc AI</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop id="bg-video">
+            <source src="White Waves - Background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="logo.webp" alt="Doc AI Logo">
+                <span>Doc AI</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="main.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                </ul>
+            </nav>
+            <div class="auth-links">
+                <a href="html.html">Sign in</a>
+                <a href="register.html" class="register">Register</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="left-section">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search Patient">
+                    <button id="search-button" class="bbb">Search</button>
+                </div>
+                <div class="medical-records">
+                    <h2>Patient Medical Records</h2>
+                    <div id="patient-info">
+                        <!-- Placeholder for patient information -->
+                    </div>
+                </div>
+                <hr>
+                <div class="add-patient">
+                    <h2>Add Patient</h2>
+                    <form id="add-patient-form">
+                        <input type="text" id="patient-name" class="search" placeholder="Name" required>
+                        <input type="number" id="patient-age" class="search" placeholder="Age" required>
+                        <input type="text" id="patient-condition" class="search" placeholder="Condition" required>
+                        <button type="submit" id="add-patient-button" class="bbb">Add Patient</button>
+                    </form>
+                </div>
+                <hr>
+                <div class="patient-data">
+                    <h2>Patient Data</h2>
+                    <div id="patient-list"></div>
+                </div>
+            </div>
+            <div class="right-section">
+                <div class="chat-container">
+                    <h2>Doc AI Chat</h2>
+                    <div id="chat-window">
+                        <!-- Placeholder for chat messages -->
+                    </div>
+                    <input type="text" id="chat-input" placeholder="Type a message">
+                    <button id="send-button">Send</button>
+                </div>
+            </div>
+            <div class="research-output">
+                <h2>Research Output</h2>
+                <div id="research-container">
+                    <!-- Placeholder for research output -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="chat.js"></script>
+    <script src="search.js"></script>
+    <script>
+        document.getElementById('add-patient-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('patient-name').value;
+            const age = document.getElementById('patient-age').value;
+            const condition = document.getElementById('patient-condition').value;
+
+            try {
+                const patient = await addPatient(name, age, condition);
+                console.log('Patient added:', patient);
+                fetchPatientData();  // Refresh patient data list
+                // Clear the input fields
+                document.getElementById('patient-name').value = '';
+                document.getElementById('patient-age').value = '';
+                document.getElementById('patient-condition').value = '';
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        async function addPatient(name, age, condition) {
+            const response = await fetch('/add_patient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, age, condition })
+            });
+
+            if (response.ok) {
+                const patient = await response.json();
+                console.log('Patient added:', patient);
+                return patient;
+            } else {
+                const error = await response.json();
+                console.error('Error adding patient:', error);
+                throw new Error(error);
+            }
+        }
+
+        async function fetchPatientData() {
+            try {
+                const patients = await fetchPatients();
+
+                const patientList = document.getElementById('patient-list');
+                patientList.innerHTML = '';
+
+                patients.forEach(patient => {
+                    const patientItem = document.createElement('div');
+                    patientItem.textContent = `Name: ${patient.name}, Age: ${patient.age}, Condition: ${patient.condition}`;
+                    patientList.appendChild(patientItem);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Fetch initial patient data on page load
+        fetchPatientData();
+
+        async function fetchPatients() {
+            const response = await fetch('/patients', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const patients = await response.json();
+                console.log('Patients fetched:', patients);
+                return patients;
+            } else {
+                const error = await response.json();
+                console.error('Error fetching patients:', error);
+                throw new Error(error);
+            }
+        }
+
+        // Event listener for input validation (example)
+        document.getElementById('patient-name').addEventListener('input', function(event) {
+            const value = event.target.value;
+            if (value.trim() === '') {
+                event.target.setCustomValidity('Name cannot be empty');
+            } else {
+                event.target.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('patient-age').addEventListener('input', function(event) {
+            const value = event.target.value;
+            if (value <= 0) {
+                event.target.setCustomValidity('Age must be a positive number');
+            } else {
+                event.target.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('patient-condition').addEventListener('input', function(event) {
+            const value = event.target.value;
+            if (value.trim() === '') {
+                event.target.setCustomValidity('Condition cannot be empty');
+            } else {
+                event.target.setCustomValidity('');
+            }
+        });
+
+        // Search functionality
+        document.getElementById('search-button').addEventListener('click', async () => {
+            const searchInput = document.getElementById('search-input').value;
+            const patientInfoContainer = document.getElementById('patient-info');
+            try {
+                console.log(`Searching for patient with name: ${searchInput}`);
+                const patients = await searchPatients(searchInput);
+                patientInfoContainer.innerHTML = '';
+
+                patients.forEach(patient => {
+                    const patientItem = document.createElement('div');
+                    patientItem.className = 'patient-record';
+
+                    const detailsElement = document.createElement('div');
+                    detailsElement.className = 'patient-details';
+                    detailsElement.innerHTML = `Name: ${patient.name}`;
+                    patientItem.appendChild(detailsElement);
+
+                    const ageElement = document.createElement('div');
+                    ageElement.className = 'patient-age';
+                    ageElement.innerHTML = `Age: ${patient.age}`;
+                    patientItem.appendChild(ageElement);
+
+                    const conditionElement = document.createElement('div');
+                    conditionElement.className = 'patient-condition';
+                    conditionElement.innerHTML = `Condition: ${patient.condition}`;
+                    patientItem.appendChild(conditionElement);
+
+                    patientInfoContainer.appendChild(patientItem);
+                });
+            } catch (error) {
+                console.error('Error searching patients:', error);
+                patientInfoContainer.textContent = `Error: ${error.message}`;
+            }
+        });
+
+        async function searchPatients(name) {
+            try {
+                const response = await fetch(`/search_patient?name=${encodeURIComponent(name)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const patients = await response.json();
+                    console.log('Patients found:', patients);
+                    return patients;
+                } else {
+                    const error = await response.json();
+                    console.error('Error searching patients:', error);
+                    throw new Error(error);
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                throw error;
+            }
+        }
+    </script>
+</body>
+</html>
